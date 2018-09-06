@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 const employees = require("./api/employees")
 const accounts = require("./api/accounts")
-
+const cors = require("cors")
 const index = require("./api")
 
 const app = express()
@@ -16,6 +16,7 @@ const app = express()
 app.use(logger("dev"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cors())
 
 app.use("/", index)
 app.use("/employees", employees)
