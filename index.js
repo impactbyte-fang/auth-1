@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 
 const employees = require("./api/employees")
 const accounts = require("./api/accounts")
+const departments = require("./api/departments")
+
 const cors = require("cors")
 const index = require("./api")
 
@@ -21,5 +23,7 @@ app.use(cors())
 app.use("/", index)
 app.use("/employees", employees)
 app.use("/accounts", accounts)
+app.use("/departments", departments)
+
 
 app.listen(PORT, () => console.log(`Application Running on  port ${PORT}`));

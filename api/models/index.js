@@ -1,12 +1,12 @@
 'use strict';
 
-var fs        = require('fs');
-var path      = require('path');
+var fs = require('fs');
+var path = require('path');
 var Sequelize = require('sequelize');
-var basename  = path.basename(__filename);
-var env       = process.env.NODE_ENV || 'development';
-var config    = require(__dirname + '/../../config/config.js')[env];
-var db        = {};
+var basename = path.basename(__filename);
+var env = process.env.NODE_ENV || 'development';
+var config = require(__dirname + '/../../config/config.js')[env];
+var db = {};
 
 if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable], config);
@@ -22,6 +22,9 @@ fs
   .forEach(file => {
     var model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
+    db[model.name].sync({
+      force: true
+    })
   });
 
 Object.keys(db).forEach(modelName => {

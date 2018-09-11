@@ -23,7 +23,7 @@ module.exports = {
     // ---------------------------------------------------------------------------
     // GET /accounts/login
     login: async (req, res) => {
-
+        console.log(req.body.email)
         try {
 
             //1. find the accunt

@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('dept_emp', {
+module.exports = function (sequelize, DataTypes) {
+  let dept_emp = sequelize.define('dept_emp', {
     emp_no: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -29,6 +29,21 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    tableName: 'dept_emp'
+    tableName: 'dept_emp',
+    timestamps: false
   });
+
+  dept_emp.associate = function (models) {
+    models.dept_emp.belongsTo(models.employees, {
+      foreignKey: 'emp_no',
+      targetKey: 'emp_no'
+    });
+
+    models.dept_emp.belongsTo(models.departments, {
+      foreignKey: 'dept_no',
+      targetKey: 'dept_no'
+    });
+  };
+
+  return dept_emp
 };

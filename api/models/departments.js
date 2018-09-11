@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('departments', {
     dept_no: {
       type: DataTypes.CHAR(4),
@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       unique: true
     }
   }, {
-    tableName: 'departments'
+    tableName: 'departments',
+    timestamps: false
   });
 };
