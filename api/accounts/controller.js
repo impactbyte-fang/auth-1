@@ -2,6 +2,7 @@ const models = require("./../models")
 const bcrypt = require('bcryptjs')
 const moment = require('moment')
 const jwt = require("jsonwebtoken")
+const nodemailer = require('nodemailer');
 
 
 module.exports = {
@@ -114,7 +115,7 @@ module.exports = {
     // PUT /accounts/:email
     put: async (req, res) => {
         console.log(req.decoded)
-        
+
         // models.accounts.findOne({ where: { emp_no: req.params.emp_no } }).then(employee => {
         //     if (employee) {
         //         return employee.update(req.body).then(updated_employee => res.send({
@@ -155,6 +156,65 @@ module.exports = {
         //     })
         // }
 
-    }
-  
+    },
+    // ---------------------------------------------------------------------------
+    // POST /accounts/generate_sign_up_form
+    generateSignUpForm: async (req, res) => {
+        const email = req.body.email
+        models.accounts.findOne({ where: { email: email } }).then(account => {
+            if (account === null) {
+                return res.send({
+                    message: "Email Not Found"
+                })
+            } else if (account.passowrd !== null) {
+                //generate token
+                let token_data = {}
+                token_data.payload = {
+                    name: `${account.first_name} ${account.last_name}`,
+                    email: account.email
+                }
+                token_data.secret = process.env.JWT_SECRET
+                token_data.options = {
+                    expiresIn: "1d" // EXPIRATION: 1 days
+                }
+                const token = jwt.sign(token_data.payload, token_data.secret, token_data.options)
+
+                //email config
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'moehammadhaekal@gmail.com',
+                        pass: ''
+                    }
+                });
+
+                const mailOptions = {
+                    from: 'moehammadhaekal@gmail.com', // sender address
+                    to: '93haekal@gmail.com', // list of receivers
+                    subject: 'Subject of your email', // Subject line
+                    html: `<p>Set your password: ${process.env.CLIENT_URL}/signup/${token} </p>` // plain text body
+                };
+
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return res.send({
+                            error: error
+                        })
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                    // Preview only available when sending through an Ethereal account
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                    res.send({
+                        message: "Success"
+                    })
+                });
+
+
+            }
+
+
+        })
+
+    },
+
 }
