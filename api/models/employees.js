@@ -36,11 +36,11 @@ module.exports = function (sequelize, DataTypes) {
     timestamps: false
   });
 
-  // employees.associate = function (models) {
-  //   models.employees.hasMany(models.dept_emp, {
-  //     foreignKey: 'emp_no'
-  //   });
-  // };
+  employees.associate = function (models) {
+    models.employees.hasMany(models.dept_emp, {
+      foreignKey: 'emp_no'
+    });
+  };
 
   return employees
 };
