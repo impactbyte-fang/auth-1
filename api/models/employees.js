@@ -27,9 +27,6 @@ module.exports = function (sequelize, DataTypes) {
     hire_date: {
       type: DataTypes.DATEONLY,
       allowNull: false
-    },
-    testbro: {
-      type: DataTypes.DATEONLY
     }
   }, {
     tableName: 'employees',
