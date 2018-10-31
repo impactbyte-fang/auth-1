@@ -4,7 +4,7 @@ module.exports = {
     // ---------------------------------------------------------------------------
     // GET /employees
     get: (req, res) => {
-        models.employees.findAll({ limit: 100 }).then(employee => {
+        models.employees.findAll({ limit: 10 }).then(employee => {
             if (employee === null) {
                 return res.send({
                     message: "data not fund"
